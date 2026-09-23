@@ -1,0 +1,28 @@
+[project]
+name = "recipe-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Sophia Raldugina-Zhu", email = "sraldugi@uci.edu" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "duckduckgo-search>=8.1.1",
+    "fastapi>=0.141.1",
+    "langchain-community>=0.4.2",
+    "langchain-google-genai>=4.4.0",
+    "langchain-openai>=1.6.5",
+    "langgraph>=1.2.12",
+    "pydantic>=2.13.5",
+    "python-dotenv>=1.2.3",
+    "tavily-python>=0.8.4",
+    "uvicorn>=0.53.0",
+]
+
+[project.scripts]
+recipe-agent = "recipe_agent:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"

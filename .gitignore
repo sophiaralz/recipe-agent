@@ -1,0 +1,15 @@
+# ignore secret keys
+.env
+
+# ignore birtual environments
+venv/
+.venv/
+
+# ignore Python bytecode / cache
+__pycache__/
+*.__pycache__
+
+# ignore IDE settings
+
+.vscode/
+.idea/
