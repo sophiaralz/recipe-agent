@@ -47,5 +47,21 @@ def extract_node(state: AgentState):
     return {"final_recipes": [r.dict() for r in output.recipes]}
 
 
+# build graph
+
+builder = StateGraph(AgentState)
+builder.add_node("generate_query", query_node)
+builder.add_node("execute_search", search_node)
+builder.add_node("extract_recipes", extract_node)
+
+builder.add_edge(START, "generate_query")
+builder.add_edge("generate_query", "execute_search")
+builder.add_edge("execute_search", "extract_recipes")
+builder.add_edge("extract_recipes", END)
+
+
+recipe_graph = builder.compile()
+
+
 
 
