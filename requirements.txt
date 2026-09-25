@@ -1,8 +1,9 @@
 fastapi
 uvicorn
 langgraph
-langchain-google-genai
+langchain-anthropic
 langchain-community
 duckduckgo-search
+ddgs
 pydantic
 python-dotenv

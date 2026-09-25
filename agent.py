@@ -1,26 +1,30 @@
 import os
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_anthropic import ChatAnthropic
 from langgraph.graph import StateGraph, START, END
 from schemas import AgentState, RecipeListResponse
 from tools import recipe_search_tool
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    temperature=0.1
+llm = ChatAnthropic(
+    model = "claude-haiku-4-5-20251001",
+    temperature = 0
 )
 
 def query_node(state: AgentState):
-    fridge_str = ", ".join(state["fridge_items"])
+    fridge = state["fridge_items"]
+    fridge_str = ", ".join(fridge) if isinstance(fridge, list) else str(fridge)
     prompt = (
-        f"The user has these items in their fridge: {fridge_str}. \n"
-        f"User desire: {state["user_prompt"]}. \n"
-        f"Write a concise web search query to find online recipes matching these constraints."
+        f"Create a short DuckDuckGo search query to find recipes using: {fridge_str}. Extra notes: {state['user_prompt']}. Return ONLY the search string."
     )
     response = llm.invoke(prompt)
-    return {"search_query": response.content.strip('"')}
+    content = response.content
+    if isinstance(content, list):
+        raw_text = content[0] if isinstance(content[0], str) else content[0].get("text", "")
+    else:
+        raw_text = str(content)
+    return {"search_query": raw_text.strip()}
 
 def search_node(state: AgentState):
     results = recipe_search_tool.invoke({"query" : state["search_query"]})
